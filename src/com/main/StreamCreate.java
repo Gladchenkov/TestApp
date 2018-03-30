@@ -38,6 +38,8 @@ public class StreamCreate {
         Stream<String> stream3 = Arrays.stream(arr);
         //way 4
         IntStream stream4 = Arrays.stream(integers);
+        //way 4 stream of lists
+        Stream<List<Integer>> stream5 = Stream.of(Arrays.asList(1, 2, 3), Arrays.asList(4, 5, 6));
     }
 
     @Test
@@ -64,12 +66,12 @@ public class StreamCreate {
                 .add("c")
                 .build();
         //way 2
-        Stream<Object> stream  =  Stream.builder()
-                .add("WWW")
+        Stream<Object> stream = Stream.builder()
+                .add("fuck")
                 .add(".")
-                .add("NOUR-IT")
+                .add("motherfucker")
                 .add(".")
-                .add("COM")
+                .add("fuck")
                 .build();
     }
 
@@ -103,15 +105,22 @@ public class StreamCreate {
     }
 
     @Test
-    public void create_infinite_stream(){
-        //way
+    public void create_infinite_stream() {
+        //way 1
         Stream<Integer> infiniteStream = Stream.iterate(0, i -> i + 2);
 
         List<Integer> collect = infiniteStream
                 .limit(10)
                 .collect(Collectors.toList());
         collect.forEach(System.out::println);
+    }
 
+    @Test
+    public void create_infinite_stream2() {
+        Stream<String> stream = Stream.of("program", "creek", "program", "creek", "java", "web", "program");
 
+        stream.map(x -> x.split(""))
+                .flatMap(Arrays::stream)
+                .forEach(System.out::print);
     }
 }
