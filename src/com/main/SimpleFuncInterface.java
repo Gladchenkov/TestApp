@@ -7,6 +7,6 @@ package com.main;
 public interface SimpleFuncInterface<T>
 
 {
-	public void doWork(T str);
+    public void doWork(T str);
 
 }
