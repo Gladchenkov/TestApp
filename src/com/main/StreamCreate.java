@@ -1,7 +1,6 @@
 package com.main;
 
 
-
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,8 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.assertEquals;
 
 public class StreamCreate {
 
@@ -109,8 +106,6 @@ public class StreamCreate {
     public void create_infinite_stream(){
         //way
         Stream<Integer> infiniteStream = Stream.iterate(0, i -> i + 2);
-
-        infiniteStream.forEach(System.out::println);
 
         List<Integer> collect = infiniteStream
                 .limit(10)
