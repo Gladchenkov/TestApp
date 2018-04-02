@@ -4,35 +4,46 @@ import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StreamOperations {
 
+    final static Logger log = Logger.getLogger(StreamOperations.class);
     private List<User> users;
     private List<String> strings;
-    final static Logger log = Logger.getLogger(StreamOperations.class);
 
     @Before
     public void setup() {
         User user = new User();
         user.setName("Fucker1");
         user.setAge(23);
+        Address address1 = new Address("Minsk", "Shpilevskogo", 56);
+        Address address2 = new Address("London", "Street", 100);
+        Address address3 = new Address("Barcelona", "Avenue", 1);
+        user.setAddresses(new ArrayList<>(Arrays.asList(address1, address2, address3)));
 
         User user2 = new User();
         user2.setName("Fuck");
         user2.setAge(18);
+        Address address4 = new Address("Grodno", "Shpilevskogo", 56);
+        Address address5 = new Address("Krakow", "Street", 100);
+        Address address6 = new Address("Moskow", "Avenue", 1);
+        user2.setAddresses(new ArrayList<>(Arrays.asList(address4, address5, address6)));
 
         User user3 = new User();
         user3.setName("Motherfucker");
         user3.setAge(20);
+        Address address7 = new Address("Vitebsk", "Shpilevskogo", 56);
+        Address address8 = new Address("Vilnus", "Street", 100);
+        Address address9 = new Address("Praha", "Avenue", 1);
+        user3.setAddresses(new ArrayList<>(Arrays.asList(address7, address8, address9)));
 
-        users = Arrays.asList(user, user2, user3);
+        users = new ArrayList<>((Arrays.asList(user, user2, user3)));
 
-        strings = Arrays.asList("abc", "", "bcd", "", "defg", "jk", "program", "creek", "program", "creek", "java", "web", "program");
+        strings = new ArrayList<>(Arrays.asList("abc", "", "bcd", "", "defg", "jk", "program", "creek", "program", "creek", "java", "web", "program"));
     }
 
     @Test
@@ -154,8 +165,75 @@ public class StreamOperations {
         //way 1
         OptionalInt reduced = IntStream.range(1, 4).reduce((a, b) -> a + b);
         log.info(reduced.getAsInt());  // = 6 (1 + 2 + 3)
-        // way 2
+        //way 2
         int reducedTwoParams = IntStream.range(1, 4).reduce(10, (a, b) -> a + b);
         log.info(reducedTwoParams);  // = 16 (10 + 1 + 2 + 3)
+        //way 3  get min value
+        Integer min = users.stream()
+                .map(User::getAge)
+                .reduce(Integer::min)
+                .get();
+        log.info(min);
+
+        //way 4  get max value
+        Integer max = users.stream()
+                .map(User::getAge)
+                .reduce(Integer::max)
+                .get();
+        log.info(max);
+
+    }
+
+    @Test
+    public void removeIf() {
+        users.forEach(System.out::println);
+        users.removeIf(x -> x.getAge() == 18);
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void flatMap() {
+        //without flatMap
+        List<List<Address>> collect = users.stream()
+                .map(User::getAddresses)
+                .collect(Collectors.toList());
+
+        //with flatMap
+        List<Address> addresses = users.stream()
+                .flatMap(user -> user.getAddresses().stream())
+                .collect(Collectors.toList());
+    }
+
+    @Test
+    public void sort() {
+        //nature order
+        List<Address> addresses = users.stream()
+                .flatMap(user -> user.getAddresses().stream())
+                .sorted(Comparator.comparing(Address::getCity))
+                .collect(Collectors.toList());
+        addresses.forEach(log::info);
+
+        log.info("========================================");
+        //reversed order
+        List<Address> reversed = users.stream()
+                .flatMap(user -> user.getAddresses().stream())
+                .sorted(Comparator.comparing(Address::getCity).reversed())
+                .collect(Collectors.toList());
+        reversed.forEach(log::info);
+    }
+
+    @Test
+    public void collect() {
+        Map<String, Address> collect = users.stream()
+                .flatMap(user -> user.getAddresses().stream())
+                .collect(Collectors.toMap(Address::getCity, Function.identity())); //Address::getCity is the key and Function.identity() is the Address itself
+        log.info(collect);
+    }
+
+    @Test
+    public void eeee() {
+        //nature order
+
+
     }
 }
