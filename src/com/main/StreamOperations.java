@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class StreamOperations {
 
@@ -171,14 +172,14 @@ public class StreamOperations {
         //way 3  get min value
         Integer min = users.stream()
                 .map(User::getAge)
-                .reduce(Integer::min)
+                .reduce(Integer::min)  //don't do that (insidious boxing cost) use mapToInt
                 .get();
         log.info(min);
 
         //way 4  get max value
         Integer max = users.stream()
                 .map(User::getAge)
-                .reduce(Integer::max)
+                .reduce(Integer::max)  //don't do that (insidious boxing cost) use mapToInt
                 .get();
         log.info(max);
 
@@ -231,9 +232,16 @@ public class StreamOperations {
     }
 
     @Test
-    public void eeee() {
-        //nature order
+    public void boxed() {
+        IntStream create = IntStream.of(1, 2, 3);
+        IntStream intStream = users.stream().mapToInt(User::getAge);
 
+        Stream<Integer> boxed1 = create.boxed();
+        Stream<Integer> boxed2 = intStream.boxed();
+    }
+
+    @Test
+    public void rangeClosed() {
 
     }
 }
