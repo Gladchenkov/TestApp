@@ -242,6 +242,8 @@ public class StreamOperations {
 
     @Test
     public void rangeClosed() {
-
+        IntStream intStream = IntStream.rangeClosed(1, 100)
+                .filter(x -> x % 2 == 0);
+        log.info(intStream.count());  //50
     }
 }
