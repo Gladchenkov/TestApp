@@ -1,0 +1,5 @@
+After this step, we have to register the path with watch service.
+There are two important concepts to understand at this stage.
+The StandardWatchEventKinds class and the WatchKey class.
+Take a look at the following registration code just to understand where each fall.
+We will follow this with explanations of the same:1
