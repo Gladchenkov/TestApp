@@ -14,7 +14,7 @@ public class StreamOperations {
 
     private List<User> users;
     private List<String> strings;
-    final static Logger log = Logger.getLogger(StreamOperations.class);
+    private final static Logger log = Logger.getLogger(StreamOperations.class);
 
     @Before
     public void setup() {
@@ -157,5 +157,15 @@ public class StreamOperations {
         // way 2
         int reducedTwoParams = IntStream.range(1, 4).reduce(10, (a, b) -> a + b);
         log.info(reducedTwoParams);  // = 16 (10 + 1 + 2 + 3)
+    }
+
+    @Test
+    public void map() {
+        users.stream()
+                .map(user -> {
+                    user.setAge(0);
+                    return user;
+                })
+                .forEach(System.out::println);
     }
 }
